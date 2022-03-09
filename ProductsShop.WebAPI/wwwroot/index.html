@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div class="card bg-light mb-3" style="max-width: 100%;">
+                <div class="card-header text-center">
+                    Продуктовый магазин
+                </div>
+                <div class="card-body text-center">
+                    <a href="">Добавить покупателя</a>
+                </div>
+            </div>
+            <div class="card text-white bg-dark" style="max-width: 100%;">
+                <div class="card-header text-center">
+                    Список покупателей
+                </div>
+                <div class="card-body text-center">
+                    <div>
+                        <div class="container">
+                            <table class="table table-striped text-white">
+                                <thead>
+                                    <tr>
+                                        <th>Имя</th>
+                                        <th>Фамилия</th>
+                                        <th>Отчество</th>
+                                        <th>Адресс</th>
+                                        <th>Кредитная карта</th>
+                                        <th>Банковский счет</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>@m.Name</td>
+                                        <td>@m.LastName</td>
+                                        <td>@m.Patronymic</td>
+                                        <td>@m.Adress</td>
+                                        <td>@m.CardNumber</td>
+                                        <td>@m.BankAccount</td>
+                                        <td>
+                                            <a href="">Редактировать</a>
+                                            <a href="">Удалить</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; Автор Латыпов Дамир Ильдарович группа 4332
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="site.js" asp-append-version="true"></script>
+</body>
+</html>
