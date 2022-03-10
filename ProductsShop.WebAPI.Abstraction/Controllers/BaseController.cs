@@ -36,7 +36,7 @@ namespace ProductsShop.WebAPI.Abstraction.Controllers
             return NotFound();
         }
 
-        [HttpPost("/create")]
+        [HttpPost("create")]
         public async Task<ActionResult<TModel>> AddModel(TModel model)
         {
             if(model != null)
