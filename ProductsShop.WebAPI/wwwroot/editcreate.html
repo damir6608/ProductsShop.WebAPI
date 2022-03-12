@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div class="card bg-light mb-3" style="max-width: 100%;">
+                <div class="card-header text-center">
+                    Продуктовый магазин
+                </div>
+                <div class="card-body text-center">
+                    <form id="FormProduct" name="product" method="post">
+                        <div class="card text-white text-center" style="max-width: 100%;">
+
+                            <div class="container text-center">
+                                <br /><table class="table table-striped text-center" style="max-width: 100%;">
+                                    <thead>
+                                    </thead>
+                                    <colgroup>
+                                        <col width="150">
+                                        <col width="80">
+                                        <col width="120">
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <th width="100px">
+                                                <label for="Name">Название продукта</label>
+                                            </th>
+                                            <td>
+                                                <input class="text-box single-line" id="Name" name="Name" type="text" value="">
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th width="100px">
+                                                <label for="Manufacturer">Производитель</label>
+                                            </th>
+                                            <td>
+                                                <input class="text-box single-line" id="Manufacturer" name="Manufacturer" type="text" value="">
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th width="100px">
+                                                <label for="Type">Тип продукта</label>
+                                            </th>
+                                            <td>
+                                                <input class="text-box single-line" id="Type" name="Type" type="text" value="">
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th width="100px">
+                                                <label for="Quantity">Количество</label>
+                                            </th>
+                                            <td>
+                                                <input class="text-box single-line" id="Quantity" name="Quantity" type="text" value="">
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th width="100px">
+                                                <label for="Cost">Стоимость</label>
+                                            </th>
+                                            <td>
+                                                <input class="text-box single-line" id="Cost" name="Cost" type="number" value="">
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th width="100px">
+                                                <label for="DeliveryDate">Дата поставки</label>
+                                            </th>
+                                            <td>
+                                                <input class="text-box single-line" id="DeliveryDate" name="DeliveryDate" type="datetime" value="">
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div style="margin-right:90%">
+                            <a href="index.html">Выйти</a>
+                        </div>
+                        <div>
+                            <input class="navbar-toggler" type="button" id="addProduct" value="Добавить продукт">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; Автор Латыпов Дамир Ильдарович группа 4332
+        </div>
+    </footer>
+    <!--<script src="site.js"></script>-->
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+
+        var IdFromUrl = getUrlVars()["id"];
+        if (IdFromUrl !== undefined)
+            $.ajax({
+                url: "https://localhost:44317/api/goods/"+IdFromUrl,
+                type: 'GET',
+                dataType: 'json'
+            }).done(function (res) {
+                console.log(res.value);
+                var product = res.value;
+                $('#Name').val(product.name)
+                $('#Manufacturer').val(product.manufacturer)
+                $('#Type').val(product.type)
+                $('#Quantity').val(product.quantity)
+                $('#Cost').val(product.cost)
+                $('#DeliveryDate').val(product.deliveryDate)
+
+            });
+    });
+    $('#addProduct').click(function () {
+        let allow = $('#Name').val() !== ''
+            && $('#Manufacturer').val() !== ''
+            && $('#Type').val() !== ''
+            && $('#Quantity').val() !== ''
+            && $('#Cost').val() !== ''
+            && $('#DeliveryDate').val() !== '';
+        var IdFromUrl = getUrlVars()["id"];
+        console.log(IdFromUrl)
+        if (allow) {
+            if (IdFromUrl == undefined) {
+                const response = fetch("https://localhost:44317/api/Goods", {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json", "Content-Type":
+                            "application/json"
+                    },
+                    body: JSON.stringify({
+                        name: $('#Name').val(),
+                        manufacturer: $('#Manufacturer').val(),
+                        type: $('#Type').val(),
+                        quantity: parseInt($('#Quantity').val(), 10),
+                        cost: parseInt($('#Cost').val(), 10),
+                        deliveryDate: $('#DeliveryDate').val()
+                    })
+                });
+                alert('Успешно!')
+                clear()
+            }
+            else {
+                const response = fetch("https://localhost:44317/api/Goods/" + IdFromUrl, {
+                    method: "PUT",
+                    headers: {
+                        "Accept": "application/json", "Content-Type":
+                            "application/json"
+                    },
+                    body: JSON.stringify({
+                        id: IdFromUrl,
+                        name: $('#Name').val(),
+                        manufacturer: $('#Manufacturer').val(),
+                        type: $('#Type').val(),
+                        quantity: parseInt($('#Quantity').val(), 10),
+                        cost: parseInt($('#Cost').val(), 10),
+                        deliveryDate: $('#DeliveryDate').val()
+                    })
+                });
+                alert('Успешно!')
+                clear()
+            }
+        }
+        else {
+            alert('Заполните все поля в верном формате!')
+        }
+       
+    });
+    function getUrlVars() {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < hashes.length; i++) {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
+    function clear() {
+
+        $('#Name').val('')
+        $('#Manufacturer').val('')
+        $('#Type').val('')
+        $('#Quantity').val('')
+        $('#Cost').val('')
+        $('#DeliveryDate').val('')
+    }
+</script>

@@ -26,81 +26,10 @@
                     Продуктовый магазин
                 </div>
                 <div class="card-body text-center">
-                    <form id="FormProduct" name="product" method="post">
-                        <div class="card text-white text-center" style="max-width: 100%;">
-
-                            <div class="container text-center" >
-                                <br/><table class="table table-striped text-center" style="max-width: 100%;">
-                                    <thead>
-                                    </thead>
-                                    <colgroup>
-                                        <col width="150">
-                                        <col width="80">
-                                        <col width="120">
-                                    </colgroup>
-                                    <tbody >
-                                        <tr>
-                                            <th width="100px">
-                                                <label for="Name">Название продукта</label>
-                                            </th>
-                                            <td>
-                                                <input class="text-box single-line" id="Name" name="Name" type="text" value="">
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <th width="100px">
-                                                <label for="Manufacturer">Производитель</label>
-                                            </th>
-                                            <td>
-                                                <input class="text-box single-line" id="Manufacturer" name="Manufacturer" type="text" value="">
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <th width="100px">
-                                                <label for="Type">Тип продукта</label>
-                                            </th>
-                                            <td>
-                                                <input class="text-box single-line" id="Type" name="Type" type="text" value="">
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <th width="100px">
-                                                <label for="Quantity">Количество</label>
-                                            </th>
-                                            <td>
-                                                <input class="text-box single-line" id="Quantity" name="Quantity" type="text" value="">
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <th width="100px">
-                                                <label for="Cost">Стоимость</label>
-                                            </th>
-                                            <td>
-                                                <input class="text-box single-line"  id="Cost" name="Cost" type="number" value="">
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <th width="100px">
-                                                <label for="DeliveryDate">Дата поставки</label>
-                                            </th>
-                                            <td>
-                                                <input class="text-box single-line" id="DeliveryDate" name="DeliveryDate" type="number" value="">
-                                            </td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        
                         <div>
-                            <input class="navbar-toggler" id="addProduct" type="submit" value="Добавить продукт">
+                            <a href="https://localhost:44317/editcreate.html" class="navbar-toggler">Создать продукт</a>
                         </div>
-                    </form>
                 </div>
             </div>
             <div class="card text-white bg-dark" style="max-width: 100%;">
@@ -122,19 +51,9 @@
                                         <th>Действия</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Колбаса</td>
-                                        <td>ООО"Казанский колбасный завод"</td>
-                                        <td>Колбасные изделия</td>
-                                        <td>12</td>
-                                        <td>143</td>
-                                        <td>25.01.2022</td>
-                                        <td>
-                                            <a href="">Редактировать</a>
-                                            <a href="">Удалить</a>
-                                        </td>
-                                    </tr>
+                                <tbody id="tableBody">
+                                    
+
                                 </tbody>
                             </table>
                         </div>
@@ -161,35 +80,57 @@
         }).done(function (res) {
             console.log(res);
             if (res.length > 0) {
-                var b = JSON.parse(res);
-                //возвращать сформированную разметку
+                console.log(res[0].name)
+                for (let i = 0; i < res.length; i++) {
+                    $('#tableBody').append(' <tr id="tableRow' + res[i].id + '">' +
+                        ' <td>' + res[i].name + '</td >' +
+                        ' <td>' + res[i].manufacturer + '</td>' +
+                        ' <td>' + res[i].type + '</td>' +
+                        ' <td>' + res[i].quantity + '</td>' +
+                        ' <td>' + res[i].cost + '</td>' +
+                        ' <td>' + res[i].deliveryDate + '</td>' +
+                        ' <td>' +
+                        '    <a href="https://localhost:44317/editcreate.html?id='+ res[i].id +'">Редактировать</a>' +
+                        '   <a style="color:#ff3b3b; cursor:pointer" onclick="DeleteRow('+ res[i].id +')">Удалить</a>' +
+                        '  </td>' +
+                        '   </tr >');
+                }
+                
             }
 
 
         });
     });
-    // this is the id of the form
-    $("#FormProduct").submit(function (e) {
 
-        e.preventDefault();
-        var form = $(this);
-
+    function DeleteRow(id) {
         $.ajax({
-            url: "https://localhost:44317/api/goods/create",
-            type: "POST",
-            dataType:'json',
-            data: form.serialize(),
-            success: function (data) {
-                console.log('Submission was successful.');
-                console.log(data);
-                console.log(form.serialize())
-            },
-            error: function (data) {
-                console.log('An error occurred.');
-                console.log(data);
-                console.log(form.serialize())
-            }
+            url: "https://localhost:44317/api/goods/"+id,
+            type: 'DELETE',
+            dataType: 'json'
+        }).done(function (res) {
+            $('#tableRow' + id).remove();
         });
-
-    });
+    }
 </script>
+<style>
+    a {
+        outline: none;
+        text-decoration: none;
+        padding: 2px 1px 0;
+    }
+
+        a:focus {
+            border-bottom: 1px;
+            background: #BAE498;
+        }
+
+        a:hover {
+            border-bottom: 1px;
+            background: #CDFEAA;
+        }
+
+        a:active {
+            background: #265301;
+            color: #CDFEAA;
+        }
+</style>
